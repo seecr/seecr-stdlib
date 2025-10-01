@@ -20,3 +20,5 @@
 # along with "Seecr Standard Library".  If not, see <http://www.gnu.org/licenses/>.
 #
 ## end license ##
+
+from .dict import Dict

@@ -29,3 +29,9 @@ def test_dict():
     d["answer"] = 42
     assert d["answer"] == 42
     assert d.answer == 42
+
+    d = Dict()
+    d.answer = 42
+
+    assert d.answer == 42
+    assert d["answer"] == 42
