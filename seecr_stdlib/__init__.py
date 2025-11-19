@@ -22,3 +22,4 @@
 ## end license ##
 
 from .dict import Dict
+from .first import first
