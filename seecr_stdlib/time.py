@@ -22,10 +22,15 @@
 ## end license ##
 
 from datetime import datetime, timezone
+from dateutil import tz
 
 
-def utc_now():
+def now_utc():
     return datetime.now(tz=timezone.utc)
+
+
+def now_local():
+    return datetime.now(tz=tz.tzlocal())
 
 
 def datetime_as_float(dt):

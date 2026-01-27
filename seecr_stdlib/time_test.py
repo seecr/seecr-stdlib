@@ -21,14 +21,21 @@
 #
 ## end license ##
 
-from .time import utc_now, datetime_as_float
+from .time import now_utc, now_local, datetime_as_float
+
+from dateutil import tz
 
 
-def test_utc_now():
-    now = utc_now()
-    assert now.tzname() == "UTC"
+def test_now_utc():
+    now = now_utc()
+    assert now.strftime("%Z") == "UTC"
+
+
+def test_now_local():
+    now = now_local()
+    assert now.strftime("%Z") != "UTC"
 
 
 def test_datetime_as_float():
-    now = utc_now()
+    now = now_utc()
     assert datetime_as_float(now) == float(now.strftime("%s"))

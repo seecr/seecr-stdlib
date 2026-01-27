@@ -18,6 +18,7 @@ classifiers = [
 ]
 dependencies = [
     "pytest >= 9.0.1, < 10",
+    "python-dateutil >= 2.9.0, < 3"
 ]
 dynamic = ["version"]
 
