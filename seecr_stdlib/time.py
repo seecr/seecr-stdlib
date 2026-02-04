@@ -34,4 +34,14 @@ def now_local():
 
 
 def datetime_as_float(dt):
-    return float(dt.strftime("%s"))
+    return float(dt.strftime("%s.%f"))
+
+
+def timestamp_local_to_utc(t):
+    local_time = datetime.fromtimestamp(t, tz.tzlocal())
+    utc_time = datetime_local_to_utc(local_time)
+    return datetime_as_float(utc_time)
+
+
+def datetime_local_to_utc(dt):
+    return dt.replace(tzinfo=tz.tzlocal()).astimezone(tz=timezone.utc)

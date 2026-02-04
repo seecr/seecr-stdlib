@@ -38,4 +38,4 @@ def test_now_local():
 
 def test_datetime_as_float():
     now = now_utc()
-    assert datetime_as_float(now) == float(now.strftime("%s"))
+    assert datetime_as_float(now) == float(now.strftime("%s.%f"))
