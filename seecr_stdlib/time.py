@@ -45,3 +45,7 @@ def timestamp_local_to_utc(t):
 
 def datetime_local_to_utc(dt):
     return dt.replace(tzinfo=tz.tzlocal()).astimezone(tz=timezone.utc)
+
+
+def datetime_utc_to_local(dt):
+    return dt.replace(tzinfo=timezone.utc).astimezone(tz=tz.tzlocal())
