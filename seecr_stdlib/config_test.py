@@ -21,6 +21,7 @@
 #
 ## end license ##
 
+import pytest
 import json
 
 from .config import Config
@@ -61,3 +62,12 @@ def test_config_get(tmp_path):
 
     assert config.get("complex.values.0.1.0") == "one"
     assert config.get("complex.values.1.2") == "two"
+
+
+def test_config_required(tmp_path):
+
+    (config_file := tmp_path / "config.json").write_text(json.dumps({}))
+    with pytest.raises(RuntimeError) as e:
+        Config(config_file=config_file, required=["root"])
+
+    assert str(e.value) == f"Mandatory key 'root' not found in config {config_file}"

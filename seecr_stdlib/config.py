@@ -25,8 +25,14 @@ import json
 
 
 class Config:
-    def __init__(self, config_file):
+    def __init__(self, config_file, required=None):
         self._config = json.loads(config_file.read_text())
+        if required is not None:
+            for key in required:
+                if self.get(key) is None:
+                    raise RuntimeError(
+                        f"Mandatory key '{key}' not found in config {config_file}"
+                    )
 
     def get(self, key, default=None):
         value = self._config
