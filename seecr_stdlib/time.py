@@ -21,8 +21,9 @@
 #
 ## end license ##
 
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from dateutil import tz
+from uuid import UUID
 
 
 def now_utc():
@@ -49,3 +50,9 @@ def datetime_local_to_utc(dt):
 
 def datetime_utc_to_local(dt):
     return dt.replace(tzinfo=timezone.utc).astimezone(tz=tz.tzlocal())
+
+
+def uuid_as_datetime_utc(uuid):
+    tz_unaware = datetime(1582, 10, 15) + timedelta(microseconds=UUID(uuid).time // 10)
+
+    return tz_unaware.replace(tzinfo=timezone.utc)
