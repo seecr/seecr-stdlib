@@ -127,3 +127,18 @@ def test_format_date_nllang_tijd(date, expected):
 )
 def test_format_date_with_string_input(string_date, style, expected):
     assert format_date(string_date, style) == expected
+
+
+@pytest.mark.parametrize(
+    "nr,style,expected",
+    [
+        (0, "iso", "1970-01-01"),
+        (0, "nllang", "donderdag 1 januari 1970"),
+        (0, "nlkort", "do 1 jan 1970"),
+        (1789395323, "iso", "2026-09-14"),
+        (1789395323, "nllang_tijd", "maandag 14 september 2026 16:15"),
+        (1789395323, "zulu", "2026-09-14T14:15:23Z"),
+    ],
+)
+def test_format_date_from_timestamp(nr, style, expected):
+    assert format_date(nr, style) == expected

@@ -26,6 +26,7 @@ __all__ = ["format_date"]
 import zoneinfo
 from functools import partial
 
+from seecr_stdlib.time import float_as_datetime
 from dateutil import parser
 
 NL_TZ = zoneinfo.ZoneInfo("Europe/Amsterdam")
@@ -33,6 +34,10 @@ NL_TZ = zoneinfo.ZoneInfo("Europe/Amsterdam")
 
 def _iso_style(date):
     return date.isoformat().split("T")[0]
+
+
+def _zulu_style(date):
+    return date.isoformat(timespec="seconds").replace("+00:00", "Z")
 
 
 def _nl_style(date, time=False, tzinfo=NL_TZ):
@@ -108,6 +113,7 @@ styles = {
     "nlkort": partial(_nllang_style, pos=1),
     "nllang_tijd": partial(_nllang_style, pos=0, time=True),
     "nlkort_tijd": partial(_nllang_style, pos=1, time=True),
+    "zulu": _zulu_style,
 }
 styles["nl-t"] = styles["nl_tijd"]
 styles["nl-l"] = styles["nllang"]
@@ -130,5 +136,7 @@ def format_date(date, style="iso"):
             date = parser.isoparse(date)
         except ValueError:
             return date
+    if isinstance(date, (int, float)):
+        date = float_as_datetime(date)
     fn = styles.get(style, _iso_style)
     return fn(date)
