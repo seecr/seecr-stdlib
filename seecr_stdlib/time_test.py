@@ -21,7 +21,8 @@
 #
 ## end license ##
 
-from .time import now_utc, now_local, datetime_as_float
+from .time import now_utc, now_local, datetime_as_float, float_as_datetime
+from datetime import timezone, datetime
 
 from dateutil import tz
 
@@ -29,6 +30,7 @@ from dateutil import tz
 def test_now_utc():
     now = now_utc()
     assert now.strftime("%Z") == "UTC"
+    assert now.tzinfo == timezone.utc
 
 
 def test_now_local():
@@ -37,5 +39,12 @@ def test_now_local():
 
 
 def test_datetime_as_float():
+    t = datetime(1970, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
+    assert t.timestamp() == 0.0
+    assert datetime_as_float(t) == 0.0
+
+
+def test_timestamp_as_datetime():
     now = now_utc()
-    assert datetime_as_float(now) == float(now.strftime("%s.%f"))
+    now_dt = float_as_datetime(datetime_as_float(now))
+    assert now_dt == now

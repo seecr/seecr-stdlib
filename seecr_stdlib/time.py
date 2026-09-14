@@ -35,7 +35,7 @@ def now_local():
 
 
 def datetime_as_float(dt):
-    return float(dt.strftime("%s.%f"))
+    return dt.timestamp()
 
 
 def timestamp_local_to_utc(t):
@@ -56,3 +56,7 @@ def uuid_as_datetime_utc(uuid):
     tz_unaware = datetime(1582, 10, 15) + timedelta(microseconds=UUID(uuid).time // 10)
 
     return tz_unaware.replace(tzinfo=timezone.utc)
+
+
+def float_as_datetime(timestamp):
+    return datetime.fromtimestamp(timestamp, tz=timezone.utc)
