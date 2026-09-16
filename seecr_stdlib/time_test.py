@@ -21,10 +21,17 @@
 #
 ## end license ##
 
-from .time import now_utc, now_local, datetime_as_float, float_as_datetime
+from .time import (
+    now_utc,
+    now_local,
+    datetime_as_float,
+    float_as_datetime,
+    isoformat_as_datetime_utc,
+)
 from datetime import timezone, datetime
 
 from dateutil import tz
+import pytest
 
 
 def test_now_utc():
@@ -48,3 +55,22 @@ def test_timestamp_as_datetime():
     now = now_utc()
     now_dt = float_as_datetime(datetime_as_float(now))
     assert now_dt == now
+
+
+@pytest.mark.parametrize(
+    "isoformat, timezone_str, expected_timestamp",
+    [
+        ("2026-09-16 10:47:54", "Europe/Amsterdam", 1789548474.0),
+        ("2026-09-16 05:47:54", "America/Sao_Paulo", 1789548474.0),
+        ("2026-09-16 08:47:54", "UTC", 1789548474.0),
+        ("1970-01-01 12:00", "UTC", 43200.0),
+        ("1970-01-01 12:00", "Europe/Amsterdam", 43200.0 - 3600.0),
+        ("1970-01-01 12:00", "America/Sao_Paulo", 43200.0 + 3 * 3600.0),
+        ("1970-01-01 12:00", None, 43200.0),
+        ("1970-01-01 12:00", "From/Nowhere", 43200.0),
+    ],
+)
+def test_fromisoformat(isoformat, timezone_str, expected_timestamp):
+    dt = isoformat_as_datetime_utc(isoformat, timezone_str)
+    assert dt.timestamp() == expected_timestamp
+    assert dt.tzinfo == timezone.utc

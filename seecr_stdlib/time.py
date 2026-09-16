@@ -21,13 +21,15 @@
 #
 ## end license ##
 
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta, timezone
 from dateutil import tz
 from uuid import UUID
 
+tz_utc = timezone.utc
+
 
 def now_utc():
-    return datetime.now(tz=timezone.utc)
+    return datetime.now(tz=tz_utc)
 
 
 def now_local():
@@ -38,6 +40,15 @@ def datetime_as_float(dt):
     return dt.timestamp()
 
 
+def isoformat_as_datetime_utc(isoformat, timezone=None):
+    dt = datetime.fromisoformat(isoformat)
+    tzinfo = tz_utc
+    if timezone:
+        tzinfo = tz.gettz(timezone) or tz_utc
+    dt = dt.replace(tzinfo=tzinfo)
+    return dt.astimezone(tz=tz_utc)
+
+
 def timestamp_local_to_utc(t):
     local_time = datetime.fromtimestamp(t, tz.tzlocal())
     utc_time = datetime_local_to_utc(local_time)
@@ -45,18 +56,18 @@ def timestamp_local_to_utc(t):
 
 
 def datetime_local_to_utc(dt):
-    return dt.replace(tzinfo=tz.tzlocal()).astimezone(tz=timezone.utc)
+    return dt.replace(tzinfo=tz.tzlocal()).astimezone(tz=tz_utc)
 
 
 def datetime_utc_to_local(dt):
-    return dt.replace(tzinfo=timezone.utc).astimezone(tz=tz.tzlocal())
+    return dt.replace(tzinfo=tz_utc).astimezone(tz=tz.tzlocal())
 
 
 def uuid_as_datetime_utc(uuid):
     tz_unaware = datetime(1582, 10, 15) + timedelta(microseconds=UUID(uuid).time // 10)
 
-    return tz_unaware.replace(tzinfo=timezone.utc)
+    return tz_unaware.replace(tzinfo=tz_utc)
 
 
 def float_as_datetime(timestamp):
-    return datetime.fromtimestamp(timestamp, tz=timezone.utc)
+    return datetime.fromtimestamp(timestamp, tz=tz_utc)
