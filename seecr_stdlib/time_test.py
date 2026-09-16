@@ -74,3 +74,10 @@ def test_fromisoformat(isoformat, timezone_str, expected_timestamp):
     dt = isoformat_as_datetime_utc(isoformat, timezone_str)
     assert dt.timestamp() == expected_timestamp
     assert dt.tzinfo == timezone.utc
+
+
+def test_isformat_as_datetime_utc_compared_to_datetime_fromisoformat():
+    isoformat = "2026-09-16 10:47:54"
+    dt1 = isoformat_as_datetime_utc(isoformat)
+    dt2 = datetime.fromisoformat(isoformat + "+00:00")
+    assert dt1.timestamp() == dt2.timestamp()
