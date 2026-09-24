@@ -24,7 +24,7 @@
 import pytest
 
 from seecr_stdlib.format import format_date
-from datetime import datetime, timezone
+from datetime import datetime, timezone, date
 
 
 @pytest.mark.parametrize(
@@ -34,6 +34,7 @@ from datetime import datetime, timezone
         (datetime(2024, 6, 15, 13, 45, 30), "2024-06-15"),
         (datetime(2023, 1, 1), "2023-01-01"),
         (datetime(2022, 12, 31, 23, 59, 59), "2022-12-31"),
+        (date(2022, 12, 31), "2022-12-31"),
     ],
 )
 def test_format_date(date, expected):
@@ -46,6 +47,7 @@ def test_format_date(date, expected):
         (None, ""),
         (datetime(2024, 6, 15, 13, 45, 30), "15-06-2024"),
         (datetime(2023, 1, 1), "01-01-2023"),
+        (date(2023, 1, 1), "01-01-2023"),
         (datetime(2022, 12, 31, 23, 59, 59), "31-12-2022"),
     ],
 )
@@ -77,6 +79,7 @@ def test_format_date_nl_tijd(date, expected):
         (None, ""),
         (datetime(2024, 6, 15, 13, 45, 30), "zaterdag 15 juni 2024"),
         (datetime(2023, 1, 1), "zondag 1 januari 2023"),
+        (date(2023, 1, 1), "zondag 1 januari 2023"),
         (datetime(2022, 12, 31, 23, 59, 59), "zaterdag 31 december 2022"),
         (datetime(2025, 12, 9), "dinsdag 9 december 2025"),
     ],

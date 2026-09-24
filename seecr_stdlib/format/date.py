@@ -28,6 +28,7 @@ from functools import partial
 
 from seecr_stdlib.time import float_as_datetime
 from dateutil import parser
+import datetime
 
 NL_TZ = zoneinfo.ZoneInfo("Europe/Amsterdam")
 
@@ -41,7 +42,9 @@ def _zulu_style(date):
 
 
 def _nl_style(date, time=False, tzinfo=NL_TZ):
-    date = date.astimezone(tzinfo)
+    if isinstance(date, datetime.datetime) and time:
+        date = date.astimezone(tzinfo)
+
     fmt = "%d-%m-%Y"
     if time:
         fmt += " %H:%M"
@@ -97,7 +100,9 @@ months_nl = list(
 
 
 def _nllang_style(date, pos, time=False, tzinfo=NL_TZ):
-    date = date.astimezone(tzinfo)
+    if isinstance(date, datetime.datetime) and time:
+        date = date.astimezone(tzinfo)
+
     day_name = days_nl[date.weekday()][pos]
     month_name = months_nl[date.month - 1][pos]
     result = f"{day_name} {date.day} {month_name} {date.year}"
