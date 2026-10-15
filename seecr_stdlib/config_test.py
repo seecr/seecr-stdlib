@@ -27,25 +27,21 @@ import json
 from .config import Config
 
 
-def test_config_get(tmp_path):
-    (config_file := tmp_path / "config.json").write_text(
-        json.dumps(
-            {
-                "root": {
-                    "text": "The text",
-                    "number": 42,
-                    "boolean": True,
-                    "values": [1, 2, 3, 4, 5],
-                    "sub": {
-                        "boolean": False,
-                    },
-                },
-                "complex": {"values": [{"1": ["one"]}, {"2": "two"}]},
-            }
-        )
-    )
+def test_config_get():
+    config = {
+        "root": {
+            "text": "The text",
+            "number": 42,
+            "boolean": True,
+            "values": [1, 2, 3, 4, 5],
+            "sub": {
+                "boolean": False,
+            },
+        },
+        "complex": {"values": [{"1": ["one"]}, {"2": "two"}]},
+    }
 
-    config = Config(config_file=config_file)
+    config = Config(config)
     assert config.get("root.text") == "The text"
     assert config.get("root.texts") is None
     assert config.get("root.texts", default="X") == "X"
@@ -65,9 +61,27 @@ def test_config_get(tmp_path):
 
 
 def test_config_required(tmp_path):
-
-    (config_file := tmp_path / "config.json").write_text(json.dumps({}))
     with pytest.raises(RuntimeError) as e:
-        Config(config_file=config_file, required=["root"])
+        Config({}, required=["root"])
 
-    assert str(e.value) == f"Mandatory key 'root' not found in config {config_file}"
+    assert str(e.value) == "Mandatory key 'root' not found in config"
+
+
+def test_config_arg(tmp_path):
+
+    (config_file := tmp_path / "config.json").write_text(json.dumps({"key": "value"}))
+    with pytest.warns(DeprecationWarning) as warnings:
+        assert Config(config_file=config_file).get("key") == "value"
+
+    assert len(warnings) == 1
+    assert (
+        "Specifying path in __init__ is deprecated, use Config.read(path, ..) instead"
+        in str(warnings[0].message)
+    )
+
+    assert Config({"key": "value"}).get("key") == "value"
+
+    with pytest.raises(ValueError) as e:
+        Config([])
+
+    assert str(e.value) == "config_file should be either a Path or dict"

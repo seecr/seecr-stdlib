@@ -22,17 +22,33 @@
 ## end license ##
 
 import json
+import pathlib
+import warnings
 
 
 class Config:
+    @classmethod
+    def read(cls, path, required=None):
+        return cls(json.loads(path).read_text(), required=required)
+
     def __init__(self, config_file, required=None):
-        self._config = json.loads(config_file.read_text())
+        if isinstance(config_file, pathlib.Path):
+            warnings.warn(
+                "Specifying path in __init__ is deprecated, use Config.read(path, ..) instead",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+            config = json.loads(config_file.read_text())
+        elif isinstance(config_file, dict):
+            config = config_file
+        else:
+            raise ValueError("config_file should be either a Path or dict")
+
+        self._config = config
         if required is not None:
             for key in required:
                 if self.get(key) is None:
-                    raise RuntimeError(
-                        f"Mandatory key '{key}' not found in config {config_file}"
-                    )
+                    raise RuntimeError(f"Mandatory key '{key}' not found in config")
 
     def get(self, key, default=None):
         value = self._config
