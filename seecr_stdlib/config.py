@@ -29,7 +29,7 @@ import warnings
 class Config:
     @classmethod
     def read(cls, path, required=None):
-        return cls(json.loads(path).read_text(), required=required)
+        return cls(json.loads(path.read_text()), required=required)
 
     def __init__(self, config_file, required=None):
         if isinstance(config_file, pathlib.Path):
