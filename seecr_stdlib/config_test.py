@@ -68,7 +68,6 @@ def test_config_required(tmp_path):
 
 
 def test_config_arg(tmp_path):
-
     (config_file := tmp_path / "config.json").write_text(json.dumps({"key": "value"}))
     with pytest.warns(DeprecationWarning) as warnings:
         assert Config(config_file=config_file).get("key") == "value"
@@ -85,3 +84,22 @@ def test_config_arg(tmp_path):
         Config([])
 
     assert str(e.value) == "config_file should be either a Path or dict"
+
+
+def test_config_expand():
+    config = Config(
+        {
+            "root": {
+                "text": "The text {name}",
+            },
+            "deeper": {"levels": {"work": {"too": "The answer is {answer}"}}},
+        }
+    )
+
+    expanded_config = config.expand_with(dict(name="has no name", answer=42))
+
+    assert config.get("root.text") == "The text {name}"
+    assert expanded_config.get("root.text") == "The text has no name"
+
+    assert config.get("deeper.levels.work.too") == "The answer is {answer}"
+    assert expanded_config.get("deeper.levels.work.too") == "The answer is 42"

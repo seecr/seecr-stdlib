@@ -26,6 +26,16 @@ import pathlib
 import warnings
 
 
+def expand_dict(obj, context):
+    if isinstance(obj, dict):
+        return {k: expand_dict(v, context) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [expand_dict(v, context) for v in obj]
+    if isinstance(obj, str):
+        return obj.format_map(context)
+    return obj  # ints, None, etc. unchanged
+
+
 class Config:
     @classmethod
     def read(cls, path, required=None):
@@ -63,3 +73,6 @@ class Config:
             if value is None:
                 return default
         return value
+
+    def expand_with(self, values_dict):
+        return Config(expand_dict(self._config, values_dict))
