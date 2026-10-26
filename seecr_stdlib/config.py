@@ -38,8 +38,8 @@ def expand_dict(obj, context):
 
 class Config:
     @classmethod
-    def read(cls, path, required=None):
-        return cls(json.loads(path.read_text()), required=required)
+    def read(cls, path, **kwargs):
+        return cls(json.loads(path.read_text()), **kwargs)
 
     def __init__(self, config_file, required=None):
         if isinstance(config_file, pathlib.Path):

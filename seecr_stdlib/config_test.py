@@ -103,3 +103,18 @@ def test_config_expand():
 
     assert config.get("deeper.levels.work.too") == "The answer is {answer}"
     assert expanded_config.get("deeper.levels.work.too") == "The answer is 42"
+
+
+def test_my_config(tmp_path):
+    (config_file := tmp_path / "config.json").write_text(
+        json.dumps({"key": "value", "nested": {"key": "nested_value"}})
+    )
+
+    class MyConfig(Config):
+        def __init__(self, config):
+            super().__init__(config, required=["key", "nested.key"])
+
+    config = MyConfig.read(config_file)
+
+    assert config.get("key") == "value"
+    assert config.get("nested.key") == "nested_value"
