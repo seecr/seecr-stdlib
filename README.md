@@ -103,4 +103,4 @@ Tests live next to the code as `<module>_test.py`.
 
 Copyright (C) 2025-2026 Seecr (Seek You Too B.V.)
 
-Licensed under the [GNU General Public License v3.0 or later](LICENSE).
+Licensed under the [MIT License](LICENSE).

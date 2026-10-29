@@ -21,7 +21,7 @@ Formatting follows black (isort is configured with `profile = "black"`).
 ## Conventions
 
 - Tests sit next to the module they test as `<module>_test.py` (not in a separate `tests/` dir), written as plain pytest functions, often with `@pytest.mark.parametrize`.
-- Every source file starts with the GPLv3 `## begin license ## ... ## end license ##` header (template data in `doc/license.conf`). Copy it into new files and keep the copyright year(s) current.
+- Every source file starts with the MIT `## begin license ## ... ## end license ##` header (template data in `doc/license.conf`). Copy it into new files and keep the copyright year(s) current.
 - Versions come from git tags via `setuptools_scm` (tags like `0.6.3`); `seecr_stdlib/_version.py` is generated and git-ignored — don't edit it.
 - Pushing a version tag to GitHub publishes that version to PyPI (`.github/workflows/publish.yml`), and PyPI never accepts a version twice. Don't push tags unless asked.
 - Only `Dict` and `first` are re-exported from the package root; other modules are imported by path (`seecr_stdlib.config`, `seecr_stdlib.time`, `seecr_stdlib.format`).
