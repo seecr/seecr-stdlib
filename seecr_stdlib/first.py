@@ -2,7 +2,7 @@
 #
 # Seecr StdLib provides convenient tools for Seecr developers
 #
-# Copyright (C) 2025 Seecr (Seek You Too B.V.) http://seecr.nl
+# Copyright (C) 2025-2026 Seecr (Seek You Too B.V.) https://seecr.nl
 #
 # This file is part of "Seecr Standard Library"
 #
