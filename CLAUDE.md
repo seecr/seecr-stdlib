@@ -23,7 +23,7 @@ Formatting follows black (isort is configured with `profile = "black"`).
 - Tests sit next to the module they test as `<module>_test.py` (not in a separate `tests/` dir), written as plain pytest functions, often with `@pytest.mark.parametrize`.
 - Every source file starts with the MIT `## begin license ## ... ## end license ##` header (template data in `doc/license.conf`). Copy it into new files and keep the copyright year(s) current.
 - Versions come from git tags via `setuptools_scm` (tags like `0.6.3`); `seecr_stdlib/_version.py` is generated and git-ignored — don't edit it.
-- Pushing a version tag to GitHub publishes that version to PyPI (`.github/workflows/publish.yml`), and PyPI never accepts a version twice. Don't push tags unless asked.
+- Pushing a version tag to GitHub publishes that version to PyPI and makes a GitHub release (`.github/workflows/publish.yml`), and PyPI never accepts a version twice. Don't push tags unless asked.
 - Only `Dict` and `first` are re-exported from the package root; other modules are imported by path (`seecr_stdlib.config`, `seecr_stdlib.time`, `seecr_stdlib.format`).
 - `format_date` dispatches through the `styles` dict in `format/date.py`; add new styles (and their short aliases like `nl-t`) there. Unknown styles fall back to ISO date. Dutch styles convert aware datetimes to `Europe/Amsterdam` when showing time.
 - `Config(path)` is deprecated in favour of `Config.read(path, ...)`; `Config.get` resolves dotted keys including list indices (`"a.values.0"`), returning `default` for missing/`None` values.
