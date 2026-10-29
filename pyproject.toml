@@ -8,13 +8,14 @@ authors = [
     {name = "Thijs Janssen", email = "thijs@seecr.nl"},
     {name = "Johan Jonkers", email = "johan@seecr.nl"},
 ]
-description = "Standard tools for seecr"
+description = "Small Python utilities: attribute-access dicts, JSON configuration, timezone-aware time helpers and date formatting"
 readme = "README.md"
 requires-python = ">=3.11"
-keywords = ["tools" ]
+keywords = ["utilities", "dict", "config", "json", "datetime", "timezone", "date formatting"]
 license = "MIT"
 license-files = ["LICENSE"]
 classifiers = [
+    "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.11",
@@ -24,6 +25,7 @@ classifiers = [
     "Operating System :: OS Independent",
     "Intended Audience :: Developers",
     "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
 ]
 dependencies = [
     "pytest >= 9.0.1, < 10",
