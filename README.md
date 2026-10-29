@@ -91,9 +91,10 @@ env.filters["format_date"] = format_date
 ## Development
 
 ```sh
-python -m venv env
-env/bin/pip install -e .
-env/bin/python -m pytest
+python -m venv env --prompt seecr-stdlib
+source env/bin/activate
+pip install -e .
+pytest
 ```
 
 Tests live next to the code as `<module>_test.py`.
