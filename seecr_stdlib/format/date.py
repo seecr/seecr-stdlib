@@ -33,6 +33,14 @@ import datetime
 NL_TZ = zoneinfo.ZoneInfo("Europe/Amsterdam")
 
 
+def _in_tz(date, tzinfo):
+    # Naive datetimes are taken to be in tzinfo already; astimezone() would
+    # assume the server's local time and make the output machine dependent.
+    if date.tzinfo is None:
+        return date.replace(tzinfo=tzinfo)
+    return date.astimezone(tzinfo)
+
+
 def _iso_style(date):
     return date.isoformat().split("T")[0]
 
@@ -43,7 +51,7 @@ def _zulu_style(date):
 
 def _nl_style(date, time=False, tzinfo=NL_TZ):
     if isinstance(date, datetime.datetime) and time:
-        date = date.astimezone(tzinfo)
+        date = _in_tz(date, tzinfo)
 
     fmt = "%d-%m-%Y"
     if time:
@@ -101,7 +109,7 @@ months_nl = list(
 
 def _nllang_style(date, pos, time=False, tzinfo=NL_TZ):
     if isinstance(date, datetime.datetime) and time:
-        date = date.astimezone(tzinfo)
+        date = _in_tz(date, tzinfo)
 
     day_name = days_nl[date.weekday()][pos]
     month_name = months_nl[date.month - 1][pos]

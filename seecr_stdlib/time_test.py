@@ -42,7 +42,8 @@ def test_now_utc():
 
 def test_now_local():
     now = now_local()
-    assert now.strftime("%Z") != "UTC"
+    assert isinstance(now.tzinfo, tz.tzlocal)
+    assert now.utcoffset() == datetime.now().astimezone().utcoffset()
 
 
 def test_datetime_as_float():
